@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      # Set your Flask secret and other environment variables here.
+      - SECRET_KEY="secretkey"
+      - FLASK_APP=app
+      - FLASK_ENV=production
+      # Point the DB_URI to the database container.
+      - DB_URI=sqlite:///test.db
