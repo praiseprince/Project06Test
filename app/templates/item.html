@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ item.name }} - Thrifty
+{% endblock %}
+
+{% block content %}
+    {% with msgs =  get_flashed_messages(with_categories=True) %}
+    {% for c, msg in msgs %}
+        {% if c == 'error' %}
+            <div class="flash-error">
+        {% else %}
+            <div class="success">
+        {% endif %}
+            {{ msg | safe}}</div><br>
+    {% endfor %}
+    {% endwith %}
+
+    <!-- Main Product Display -->
+    <div class="main-wrap">
+        <div class="product">
+            <!-- Image Gallery -->
+            <div class="image-gallery">
+				<img src="{{ item.image }}" class="pic">
+			</div>
+			
+
+            <!-- Product Details -->
+            <div class="product-details">
+				
+                <div class="details">
+                    <h2>{{ item.name }}</h2>
+                    <h3>${{ item.price }}</h3>
+                    <h4>Ratings</h4>
+                    <!-- Stars for Rating -->
+                    <i class="fa fa-star checked"></i>
+                    <i class="fa fa-star checked"></i>
+                    <i class="fa fa-star checked"></i>
+                    <i class="fa fa-star checked"></i>
+                    <i class="fa fa-star checked"></i>
+                    <span class="text-muted">({{ range(1, 51) | random }})</span>
+                </div>
+
+                <!-- Product Description -->
+                <div class="details">
+                    <p class="text-muted">{{ item.details | safe }}</p>
+                </div>
+
+                <!-- Add to Cart Form -->
+                <form action="{{ url_for('add_to_cart', id=item.id) }}" method="POST">
+                    Quantity: 
+                    <input type="number" value="1" name="quantity" min="1" max="50" onkeyup="if(this.value > 50) this.value=50;" required>
+                    <div class="sub-btn">
+                        <input type="submit" class="submit" value="Add to Cart" name="add">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

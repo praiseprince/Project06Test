@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Home - Thrifty
+{% endblock %}
+
+{% block content %}
+	{% with msgs = get_flashed_messages(with_categories=True) %}
+		{% for c, msg in msgs %}
+			{% if c == 'error' %}
+				<div class="flash-error">
+			{% else %}
+				<div class="success">
+			{% endif %}
+				{{ msg | safe }}</div><br>
+		{% endfor %}
+	{% endwith %}
+
+	{% if search %}
+		<h3>Search results for "{{ query }}":</h3>
+	{% else %}
+		<h3>New Arrivals</h3>
+		<br>
+	{% endif %}
+
+	<!-- Product Main Section -->
+	<main class="product-main">
+		<section class="product-grid">
+			{% for item in items[::-1] %}
+			<div class="showcase">
+				<div class="showcase-banner">
+					<img src="{{ item.image }}" class="product-img default" alt="{{ item.name }}">
+					<a href="{{ url_for('item', id=item.id) }}"><img src="{{ item.image }}" class="product-img hover" alt="{{ item.name }} Hover"></a>
+					<span class="showcase-badge">New</span>
+					<div class="showcase-actions">
+						<button class="btn-action">❤️</button>
+						<button class="btn-action">🔍</button>
+					</div>
+				</div>
+
+				
+
+				<div class="showcase-content">
+					<a href="{{ url_for('item', id=item.id) }}" class="showcase-category">Category</a>
+					<h3 class="showcase-title">
+						<a href="{{ url_for('item', id=item.id) }}">{{ item.name }}</a>
+					</h3>
+					<div class="price-box">
+						<span class="price">${{ item.price }}</span>
+						<del>${{ (item.price * 1.2) | round(2) }}</del>
+					</div>
+					<div class="rating">
+						<i class="fa fa-star checked"></i>
+						<i class="fa fa-star checked"></i>
+						<i class="fa fa-star checked"></i>
+						<i class="fa fa-star checked"></i>
+						<i class="fa fa-star checked"></i>
+						<span class="text-muted">({{ range(1, 51) | random }})</span>
+						<!-- Add to Cart Button -->
+					
+					</div>
+					<button class="buy-now-btn" value="Add to Cart" name="add">🛒 Add to Cart</button>
+
+					
+				</div>
+			</div>
+			{% endfor %}
+		</section>
+	</main>
+
+	{% if not items %}
+		<div class="flash-error">
+			No items found.<br>
+			<a href="{{ url_for('home') }}">Discover new items</a>
+		</div>
+	{% endif %}
+{% endblock %}

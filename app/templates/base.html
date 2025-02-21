@@ -1,0 +1,99 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+          crossorigin="anonymous">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='aesthetics.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='upload.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='productstyle.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <title>{% block title %} {% endblock %}</title>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container d-flex align-items-center justify-content-between w-100">
+            
+            <!-- Website Title -->
+            <a class="title-name" href="{{ url_for('home') }}">Thrifty</a>
+
+            <!-- Search Bar (Centered) -->
+            <form class="form-inline mx-auto" action="{{ url_for('search') }}">
+              <input class="search-field" type="search" name="query" placeholder="Search" size="40" required>
+            </form>
+
+            <!-- Navigation Links (Aligned to Right) -->
+            <div class="navbar-nav d-flex align-items-center ml-auto">
+                <a class="nav-link mx-2" href="{{ url_for('home') }}">Home</a>
+
+                {% if not current_user.is_authenticated %}
+                    <a class="nav-link mx-2" href="{{ url_for('register') }}">Register</a>
+                    <a class="nav-link mx-2" href="{{ url_for('login') }}">Login</a>
+                {% else %}
+                    <!-- Cart Icon -->
+                    <a class="nav-link mx-2" href="{{ url_for('cart') }}">
+                        <i class="fa fa-shopping-cart" style="font-size:25px"></i>
+                    </a>
+
+                    <!-- User Dropdown -->
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle mx-2" href="#" id="userDropdown" role="button" data-toggle="dropdown">
+                            <i class="fa fa-user-circle" style="font-size:25px"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            <span class="dropdown-item text-muted">{{ current_user.name }}</span>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ url_for('orders') }}">Orders</a>
+                            {% if current_user.admin == 1 %}
+                                <a class="dropdown-item" href="{{ url_for('admin.dashboard') }}">Admin</a>
+                            {% endif %}
+                            <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">Logout</a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center text-lg-start">
+        <div class="text-center p-3">
+            © {{ now.year }} Copyright:
+            Thrifty
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" 
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" 
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" 
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7H4UibX39j7fakFPskvXusvfa0b4Q" 
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" 
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
+            crossorigin="anonymous"></script>
+</body>
+</html>
